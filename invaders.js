@@ -3,6 +3,12 @@ const player = {
     y: 570
 };
 
+
+const enemy = {
+    x: 250,
+    y: 480
+}
+
 let bullets = [];
 
 let direction = {
@@ -55,8 +61,11 @@ function draw() {
     context.fillStyle = 'red';
     context.fillText("Space Invaders", 10, 50);
 
-    context.fillStyle = 'red';
+    context.fillStyle = 'pink';
     context.fillRect(player.x, player.y, 30, 30);
+
+    context.fillStyle = 'red';
+    context.fillRect(enemy.x, enemy.y, 30, 30);
 
     for(let index = 0; index < bullets.length; index++){
     context.fillStyle = 'blue';
