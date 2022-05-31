@@ -1,9 +1,46 @@
 const player = {
-    x: 390,
-    y: 580
+    x: 380,
+    y: 570
 };
 
+let bullets = [];
+
+let direction = {
+    up: false,
+    left: false,
+    right: false,
+    down: false,
+    shoot: false
+};
+
+
 function setup() {
+   
+}
+
+function update(){
+    if (direction.up) {
+        player.y -= 7;
+    }
+    if (direction.down) {
+        player.y += 7;
+    }
+    if (direction.right) {
+        player.x += 7;
+    }
+    if (direction.left) {
+        player.x -= 7;
+    }
+    if (direction.shoot) {
+        bullets.push( {
+            x: player.x + 15,
+            y: player.y 
+        } )
+    }
+
+    for (let index = 0; index < bullets.length; index++) {
+        bullets[index].y -= 20;
+}
     draw();
 }
 
@@ -15,31 +52,67 @@ function draw() {
     context.fillRect(0, 0, 800, 600);
     
     context.font = "48px Verdana";
-    context.fillStyle = 'white';
+    context.fillStyle = 'red';
     context.fillText("Space Invaders", 10, 50);
 
-    context.fillStyle = 'yellow';
-    context.fillRect(player.x, player.y, 20, 20);
+    context.fillStyle = 'red';
+    context.fillRect(player.x, player.y, 30, 30);
+
+    for(let index = 0; index < bullets.length; index++){
+    context.fillStyle = 'blue';
+    context.beginPath()
+    context.arc(bullets[index].x, bullets[index].y, 5, 0, 2 * Math.PI)
+    context.fill()}
+
 }
 
 function movePlayer(event) {
     switch(event.key) {
         case "ArrowLeft":
-            player.x -= 10;
+            direction.left = true;
             break;
         case "ArrowRight":
-            player.x += 10;
+            direction.right = true;
             break;
         case "ArrowUp":
-            player.y -= 10;
+            direction.up = true;
             break;
         case "ArrowDown":
-            player.x += 10;
+            direction.down = true;
+            break;
+        case " ":
+           direction.shoot = true;
+        
             break;
     }
 
-    draw();
 }
 
+function keyUp(event){
+    switch(event.key) {
+        case "ArrowLeft":
+            direction.left = false;
+            break;
+        case "ArrowRight":
+            direction.right = false;
+            break;
+        case "ArrowUp":
+            direction.up = false;
+            break;
+        case "ArrowDown":
+            direction.down = false;
+            break;
+            case " ":
+                direction.shoot = false;
+             
+                 break;
+    }
+
+}
+
+window.addEventListener('keyup',keyUp)
 window.addEventListener('load', setup);
 window.addEventListener('keydown', movePlayer);
+
+setInterval(draw, 50)
+setInterval(update, 30)
